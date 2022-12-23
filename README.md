@@ -1,9 +1,9 @@
-
 #### Update
 
 2020-09:
-* Change the print format of each epoch
-* Add Cpp Extension in  `code/sources/`  for negative sampling. To use the extension, please install `pybind11` and `cppimport` under your environment
+
+- Change the print format of each epoch
+- Add Cpp Extension in `code/sources/` for negative sampling. To use the extension, please install `pybind11` and `cppimport` under your environment
 
 ---
 
@@ -11,7 +11,7 @@
 
 This is the Pytorch implementation for our SIGIR 2020 paper:
 
->SIGIR 2020. Xiangnan He, Kuan Deng ,Xiang Wang, Yan Li, Yongdong Zhang, Meng Wang(2020). LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation, [Paper in arXiv](https://arxiv.org/abs/2002.02126).
+> SIGIR 2020. Xiangnan He, Kuan Deng ,Xiang Wang, Yan Li, Yongdong Zhang, Meng Wang(2020). LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation, [Paper in arXiv](https://arxiv.org/abs/2002.02126).
 
 Author: Prof. Xiangnan He (staff.ustc.edu.cn/~hexn/)
 
@@ -21,13 +21,9 @@ Author: Prof. Xiangnan He (staff.ustc.edu.cn/~hexn/)
 
 In this work, we aim to simplify the design of GCN to make it more concise and appropriate for recommendation. We propose a new model named LightGCN,including only the most essential component in GCN—neighborhood aggregation—for collaborative filtering
 
-
-
 ## Enviroment Requirement
 
 `pip install -r requirements.txt`
-
-
 
 ## Dataset
 
@@ -39,15 +35,15 @@ see more in `dataloader.py`
 
 run LightGCN on **Gowalla** dataset:
 
-* change base directory
+- change base directory
 
 Change `ROOT_PATH` in `code/world.py`
 
-* command
+- command
 
 ` cd code && python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2020 --dataset="gowalla" --topks="[20]" --recdim=64`
 
-* log output
+- log output
 
 ```shell
 ...
@@ -67,42 +63,41 @@ BPR[sample time][16.9=16.60+0.45]
 ...
 ```
 
-*NOTE*:
+_NOTE_:
 
 1. Even though we offer the code to split user-item matrix for matrix multiplication, we strongly suggest you don't enable it since it will extremely slow down the training speed.
 2. If you feel the test process is slow, try to increase the ` testbatch` and enable `multicore`(Windows system may encounter problems with `multicore` option enabled)
 3. Use `tensorboard` option, it's good.
-4. Since we fix the seed(`--seed=2020` ) of `numpy` and `torch` in the beginning, if you run the command as we do above, you should have the exact output log despite the running time (check your output of *epoch 5* and *epoch 116*).
-
+4. Since we fix the seed(`--seed=2020` ) of `numpy` and `torch` in the beginning, if you run the command as we do above, you should have the exact output log despite the running time (check your output of _epoch 5_ and _epoch 116_).
 
 ## Extend:
-* If you want to run lightGCN on your own dataset, you should go to `dataloader.py`, and implement a dataloader inherited from `BasicDataset`.  Then register it in `register.py`.
-* If you want to run your own models on the datasets we offer, you should go to `model.py`, and implement a model inherited from `BasicModel`.  Then register it in `register.py`.
-* If you want to run your own sampling methods on the datasets and models we offer, you should go to `Procedure.py`, and implement a function. Then modify the corresponding code in `main.py`
 
+- If you want to run lightGCN on your own dataset, you should go to `dataloader.py`, and implement a dataloader inherited from `BasicDataset`. Then register it in `register.py`.
+- If you want to run your own models on the datasets we offer, you should go to `model.py`, and implement a model inherited from `BasicModel`. Then register it in `register.py`.
+- If you want to run your own sampling methods on the datasets and models we offer, you should go to `Procedure.py`, and implement a function. Then modify the corresponding code in `main.py`
 
 ## Results
-*all metrics is under top-20*
 
-***pytorch* version results** (stop at 1000 epochs):
+_all metrics is under top-20_
 
-(*for seed=2020*)
+**_pytorch_ version results** (stop at 1000 epochs):
 
-* gowalla:
+(_for seed=2020_)
 
-|             | Recall | ndcg | precision |
-| ----------- | ---------------------------- | ----------------- | ---- |
-| **layer=1** | 0.1687               | 0.1417    | 0.05106 |
-| **layer=2** | 0.1786                     | 0.1524    | 0.05456 |
-| **layer=3** | 0.1824                | 0.1547 | 0.05589 |
-| **layer=4** | 0.1825                 | 0.1537       | 0.05576 |
+- gowalla:
 
-* yelp2018
+|             | Recall | ndcg   | precision |
+| ----------- | ------ | ------ | --------- |
+| **layer=1** | 0.1687 | 0.1417 | 0.05106   |
+| **layer=2** | 0.1786 | 0.1524 | 0.05456   |
+| **layer=3** | 0.1824 | 0.1547 | 0.05589   |
+| **layer=4** | 0.1825 | 0.1537 | 0.05576   |
 
-|             | Recall | ndcg | precision |
-| ----------- | ---------------------------- | ----------------- | ---- |
-| **layer=1** | 0.05604     | 0.04557 | 0.02519 |
-| **layer=2** | 0.05988               | 0.04956 | 0.0271 |
-| **layer=3** | 0.06347          | 0.05238 | 0.0285 |
-| **layer=4** | 0.06515                | 0.05325 | 0.02917 |
+- yelp2018
 
+|             | Recall  | ndcg    | precision |
+| ----------- | ------- | ------- | --------- |
+| **layer=1** | 0.05604 | 0.04557 | 0.02519   |
+| **layer=2** | 0.05988 | 0.04956 | 0.0271    |
+| **layer=3** | 0.06347 | 0.05238 | 0.0285    |
+| **layer=4** | 0.06515 | 0.05325 | 0.02917   |
