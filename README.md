@@ -24,6 +24,7 @@ In this work, we aim to simplify the design of GCN to make it more concise and a
 ## Enviroment Requirement
 
 `pip install -r requirements.txt`
+`pip install torch-sparse`
 
 ## Dataset
 
