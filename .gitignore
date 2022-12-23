@@ -13,6 +13,6 @@ runs/
 __pycache__/
 *.npy
 *.so
-.rendered
+.rendered.*
 env
 rawdata

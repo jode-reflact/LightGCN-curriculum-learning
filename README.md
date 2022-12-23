@@ -34,7 +34,7 @@ see more in `dataloader.py`
 
 ## An example to run a 3-layer LightGCN
 
-run LightGCN on **Gowalla** dataset:
+run LightGCN on **ML-25M** dataset:
 
 - change base directory
 
@@ -42,7 +42,7 @@ Change `ROOT_PATH` in `code/world.py`
 
 - command
 
-` cd code && python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2020 --dataset="gowalla" --topks="[20]" --recdim=64`
+`cd code && python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2023 --dataset="ml-25m" --topks="[20]" --recdim=64 --tensorboard=1`
 
 - log output
 
