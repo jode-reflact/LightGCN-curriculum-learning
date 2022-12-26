@@ -4,7 +4,7 @@ import model
 import utils
 from pprint import pprint
 
-if world.dataset in ['gowalla', 'yelp2018', 'amazon-book', 'ml-25m', 'ml-25m_small']:
+if world.dataset in ['gowalla', 'yelp2018', 'amazon-book', 'ml-25m', 'ml-25m_small', 'ml-25m_sorted']:
     dataset = dataloader.Loader(path="../data/"+world.dataset)
 elif world.dataset == 'lastfm':
     dataset = dataloader.LastFM()
