@@ -50,18 +50,25 @@ class BPRLoss:
         return loss.cpu().item()
 
 
-def UniformSample_original(dataset, neg_ratio = 1):
+def UniformSample_original(dataset, neg_ratio = 1, epoch=0):
     dataset : BasicDataset
     allPos = dataset.allPos
     start = time()
+    high = dataset.n_users
+    # only use a percentage of all users for the training in the first half of the epochs
+    # earlier users should be "easier" to provide curriculum learning aspect
+    epochPerc = epoch / world.TRAIN_epochs
+    if epochPerc < 0.5:
+        high = int(dataset.n_users * epochPerc)
+    print("high", high)
     if sample_ext:
-        S = sampling.sample_negative(dataset.n_users, dataset.m_items,
+        S = sampling.sample_negative(high, dataset.m_items,
                                      dataset.trainDataSize, allPos, neg_ratio)
     else:
-        S = UniformSample_original_python(dataset)
+        S = UniformSample_original_python(dataset, epoch, high)
     return S
 
-def UniformSample_original_python(dataset):
+def UniformSample_original_python(dataset, epoch: int, high):
     """
     the original impliment of BPR Sampling in LightGCN
     :return:
@@ -70,7 +77,9 @@ def UniformSample_original_python(dataset):
     total_start = time()
     dataset : BasicDataset
     user_num = dataset.trainDataSize
-    users = np.random.randint(0, dataset.n_users, user_num)
+    # returns a list of random user ids with the length of the training interactions
+    # ml-25m-small --> 752 training interactions with 11 users, len(users) --> 752
+    users = np.random.randint(0, high, user_num)
     allPos = dataset.allPos
     S = []
     sample_time1 = 0.
@@ -82,13 +91,14 @@ def UniformSample_original_python(dataset):
             continue
         sample_time2 += time() - start
         posindex = np.random.randint(0, len(posForUser))
-        positem = posForUser[posindex]
+        positem = posForUser[posindex] # get one random positive item for the current user
         while True:
-            negitem = np.random.randint(0, dataset.m_items)
+            negitem = np.random.randint(0, dataset.m_items) # get one random item from the dataset
             if negitem in posForUser:
-                continue
+                continue # if its an positive item for the user, try another one
             else:
                 break
+        # append the user, one positive and one negative item to the training sample 
         S.append([user, positem, negitem])
         end = time()
         sample_time1 += end - start
