@@ -57,9 +57,10 @@ def UniformSample_original(dataset, neg_ratio = 1, epoch=0):
     high = dataset.n_users
     # only use a percentage of all users for the training in the first half of the epochs
     # earlier users should be "easier" to provide curriculum learning aspect
-    epochPerc = epoch / world.TRAIN_epochs
-    if epochPerc < 0.5:
-        high = int(dataset.n_users * epochPerc)
+    if world.curriculum_learning:
+        epochPerc = epoch / world.TRAIN_epochs
+        if epochPerc < 0.5:
+            high = int(dataset.n_users * epochPerc)
     print("high", high)
     if sample_ext:
         S = sampling.sample_negative(high, dataset.m_items,
