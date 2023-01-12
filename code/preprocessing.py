@@ -5,46 +5,82 @@ from sklearn import model_selection, metrics, preprocessing
 from sklearn.model_selection import train_test_split
 from torch_geometric.data import download_url, extract_zip
 import argparse
+from typing import Literal
 
 parser = argparse.ArgumentParser(description="Preprocessing")
 parser.add_argument('--sorted', action='store_true', default=False, help='whether to preprocess sorted dataset')
 parser.add_argument('--threshold', type=float, default=3.5, help='rating threshold for positive entries')
+parser.add_argument('--dataset', type=str, default='ml-25m', help='which dataset to preprocess ["ml-25m", "ml-1m"], default = "ml-25m"')
 
 args = parser.parse_args()
 
 SORTED = args.sorted
+DATASET: Literal['ml-25m', 'ml-1m'] = args.dataset
 RATING_THRESHOLD = args.threshold #default = 3.5
 
 url_ml25 = 'https://files.grouplens.org/datasets/movielens/ml-25m.zip'
+url_ml1 = 'https://files.grouplens.org/datasets/movielens/ml-1m.zip'
 
 if not os.path.exists('../rawdata'):
     os.makedirs('../rawdata', exist_ok=True)
+if not os.path.exists('../data/ml-1m'):
+    os.makedirs('../data/ml-1m', exist_ok=True)
+if not os.path.exists('../data/ml-1m_sorted'):
+    os.makedirs('../data/ml-1m_sorted', exist_ok=True)
+if not os.path.exists('../data/ml-25m'):
+    os.makedirs('../data/ml-25m', exist_ok=True)
+if not os.path.exists('../data/ml-25m_sorted'):
+    os.makedirs('../data/ml-25m_sorted', exist_ok=True)
 
 extract_zip(download_url(url_ml25, '../rawdata/'), '../rawdata/')
+extract_zip(download_url(url_ml1, '../rawdata/'), '../rawdata/')
 
-rating_path = '../rawdata/ml-25m/ratings.csv'
 
-rating_df = pd.read_csv(rating_path)
+if DATASET == 'ml-25m':
+    rating_path = '../rawdata/ml-25m/ratings.csv'
+    rating_df = pd.read_csv(rating_path)
+elif DATASET == 'ml-1m':
+    rating_path = '../rawdata/ml-1m/ratings.dat'
+
+    rating_df = pd.read_csv(
+        rating_path, 
+        sep = '::', 
+        header = None, 
+        engine = 'python', 
+        encoding = 'latin-1',
+        names=["userId","movieId","rating","timestamp"]
+    )
+else:
+    raise ValueError('Dataset error: ' + DATASET)
+
+# size calculation
+count_negatives = len(rating_df[rating_df['rating'] <= RATING_THRESHOLD])
+
+count_positives = len(rating_df[rating_df['rating'] > RATING_THRESHOLD])
+
+print("threshold", RATING_THRESHOLD)
+print("Positive", count_positives / len(rating_df))
+print("Negative", count_negatives / len(rating_df))
 
 if SORTED:
-    if os.path.exists('../rawdata/ratings_sorted.csv'):
-        rating_df = pd.read_csv('../rawdata/ratings_sorted.csv', index_col=0)
+    if os.path.exists('../rawdata/'+DATASET+'_ratings_sorted.csv'):
+        rating_df = pd.read_csv('../rawdata/'+DATASET+'_ratings_sorted.csv', index_col=0)
         rating_df.sort_values(by='userId', ascending=True, inplace=True)
     else:
-        sort_df = pd.read_csv('../rawdata/user_sorted_rating_std.csv')
+        sort_df = pd.read_csv('../rawdata/'+DATASET+'_user_sorted_rating_std.csv')
         rating_df['sort_index'] = rating_df['userId'].apply(lambda userId: sort_df.userId.eq(userId).idxmax())
         rating_df.drop(columns=['userId'], inplace=True)
         rating_df.rename(columns={"sort_index": "userId"}, inplace=True)
         rating_df.sort_values(by='userId', ascending=True, inplace=True)
-        rating_df.to_csv('../rawdata/ratings_sorted.csv')
+        rating_df.to_csv('../rawdata/'+DATASET+'_ratings_sorted.csv')
 
-    pathTrain = os.sep.join(['../data', 'ml-25m_sorted', 'train.txt'])
-    pathTest = os.sep.join(['../data', 'ml-25m_sorted', 'test.txt'])
+    pathTrain = os.sep.join(['../data', DATASET + '_sorted', 'train.txt'])
+    pathTest = os.sep.join(['../data', DATASET + '_sorted', 'test.txt'])
 else:
     lbl_user = preprocessing.LabelEncoder()
     rating_df.userId = lbl_user.fit_transform(rating_df.userId.values)
-    pathTrain = os.sep.join(['../data', 'ml-25m', 'train.txt'])
-    pathTest = os.sep.join(['../data', 'ml-25m', 'test.txt'])
+    pathTrain = os.sep.join(['../data', DATASET, 'train.txt'])
+    pathTest = os.sep.join(['../data', DATASET, 'test.txt'])
 
 lbl_movie = preprocessing.LabelEncoder()
 rating_df.movieId = lbl_movie.fit_transform(rating_df.movieId.values)
