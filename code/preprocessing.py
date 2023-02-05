@@ -10,34 +10,27 @@ from typing import Literal
 parser = argparse.ArgumentParser(description="Preprocessing")
 parser.add_argument('--sorted', action='store_true', default=False, help='whether to preprocess sorted dataset')
 parser.add_argument('--threshold', type=float, default=3.5, help='rating threshold for positive entries')
-parser.add_argument('--dataset', type=str, default='ml-25m', help='which dataset to preprocess ["ml-25m", "ml-1m"], default = "ml-25m"')
+parser.add_argument('--dataset', type=str, default='ml-25m', help='which dataset to preprocess ["ml-25m", "ml-1m", "ml-latest-small"], default = "ml-25m"')
 
 args = parser.parse_args()
 
 SORTED = args.sorted
-DATASET: Literal['ml-25m', 'ml-1m'] = args.dataset
+DATASET: Literal['ml-25m', 'ml-1m', 'ml-latest-small'] = args.dataset
 RATING_THRESHOLD = args.threshold #default = 3.5
 
 url_ml25 = 'https://files.grouplens.org/datasets/movielens/ml-25m.zip'
 url_ml1 = 'https://files.grouplens.org/datasets/movielens/ml-1m.zip'
-
-if not os.path.exists('../rawdata'):
-    os.makedirs('../rawdata', exist_ok=True)
-if not os.path.exists('../data/ml-1m'):
-    os.makedirs('../data/ml-1m', exist_ok=True)
-if not os.path.exists('../data/ml-1m_sorted'):
-    os.makedirs('../data/ml-1m_sorted', exist_ok=True)
-if not os.path.exists('../data/ml-25m'):
-    os.makedirs('../data/ml-25m', exist_ok=True)
-if not os.path.exists('../data/ml-25m_sorted'):
-    os.makedirs('../data/ml-25m_sorted', exist_ok=True)
+url_ml_latest_small = 'https://files.grouplens.org/datasets/movielens/ml-latest-small.zip'
 
 extract_zip(download_url(url_ml25, '../rawdata/'), '../rawdata/')
 extract_zip(download_url(url_ml1, '../rawdata/'), '../rawdata/')
-
+extract_zip(download_url(url_ml_latest_small, '../rawdata/'), '../rawdata/')
 
 if DATASET == 'ml-25m':
     rating_path = '../rawdata/ml-25m/ratings.csv'
+    rating_df = pd.read_csv(rating_path)
+elif DATASET == 'ml-latest-small':
+    rating_path = '../rawdata/ml-latest-small/ratings.csv'
     rating_df = pd.read_csv(rating_path)
 elif DATASET == 'ml-1m':
     rating_path = '../rawdata/ml-1m/ratings.dat'
@@ -52,6 +45,13 @@ elif DATASET == 'ml-1m':
     )
 else:
     raise ValueError('Dataset error: ' + DATASET)
+
+print("Using Dataset:", DATASET)
+
+sortedDir = os.sep.join(['../data', DATASET + '_sorted'])
+unsortedDir = os.sep.join(['../data', DATASET])
+os.makedirs(sortedDir, exist_ok=True)
+os.makedirs(unsortedDir, exist_ok=True)
 
 # size calculation
 count_negatives = len(rating_df[rating_df['rating'] <= RATING_THRESHOLD])
