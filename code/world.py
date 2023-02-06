@@ -8,6 +8,7 @@ Xiangnan He et al. LightGCN: Simplifying and Powering Graph Convolution Network 
 
 import os
 from os.path import join
+from typing import Literal
 import torch
 from enum import Enum
 from parse import parse_args
@@ -48,6 +49,12 @@ config['A_split'] = False
 config['bigdata'] = False
 
 curriculum_learning = args.curriculum_learning
+cl_version: Literal[1,2] = args.cl_version
+
+available_versions = [1,2]
+
+if cl_version not in available_versions:
+    raise NotImplementedError(f"Unsupported Curriculum Learning Version {cl_version}!, try {available_versions}")
 
 GPU = torch.cuda.is_available()
 device = torch.device('cuda' if GPU else "cpu")

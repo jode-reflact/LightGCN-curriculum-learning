@@ -5,6 +5,7 @@ Xiangnan He et al. LightGCN: Simplifying and Powering Graph Convolution Network 
 
 @author: Jianbai Ye (gusye@mail.ustc.edu.cn)
 '''
+import math
 import world
 import torch
 from torch import nn, optim
@@ -49,6 +50,8 @@ class BPRLoss:
 
         return loss.cpu().item()
 
+def getMultiplyPerc(x):
+    return int(math.ceil((x) * 100 / 10.0))
 
 def UniformSample_original(dataset, neg_ratio = 1, epoch=0):
     dataset : BasicDataset
@@ -59,8 +62,11 @@ def UniformSample_original(dataset, neg_ratio = 1, epoch=0):
     # earlier users should be "easier" to provide curriculum learning aspect
     if world.curriculum_learning:
         epochPerc = epoch / world.TRAIN_epochs
-        if epochPerc < 0.5:
-            high = int(dataset.n_users * epochPerc)
+        if world.cl_version == 1:
+            if epochPerc < 0.5:
+                high = max(int(dataset.n_users * epochPerc),1)
+        elif world.cl_version == 2:
+            high = world.config['test_u_batch_size'] * getMultiplyPerc(epochPerc)
     print("high", high)
     if sample_ext:
         S = sampling.sample_negative(high, dataset.m_items,

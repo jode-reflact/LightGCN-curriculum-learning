@@ -44,4 +44,5 @@ def parse_args():
     parser.add_argument('--seed', type=int, default=2020, help='random seed')
     parser.add_argument('--model', type=str, default='lgn', help='rec-model, support [mf, lgn]')
     parser.add_argument('--curriculum_learning', action='store_true', default=False, help='Whether to use curriculum learning')
+    parser.add_argument('--cl_version', type=int, default=1, help='Which curriculum version to use, possible: 1,2')
     return parser.parse_args()
