@@ -58,6 +58,7 @@ def UniformSample_original(dataset, neg_ratio = 1, epoch=0):
     allPos = dataset.allPos
     start = time()
     high = dataset.n_users
+    print("N_users", dataset.n_users)
     # only use a percentage of all users for the training in the first half of the epochs
     # earlier users should be "easier" to provide curriculum learning aspect
     if world.curriculum_learning:
