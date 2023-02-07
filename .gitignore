@@ -16,3 +16,4 @@ __pycache__/
 .rendered.*
 env
 rawdata
+code/test.py

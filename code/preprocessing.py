@@ -6,6 +6,8 @@ from sklearn.model_selection import train_test_split
 from torch_geometric.data import download_url, extract_zip
 import argparse
 from typing import Literal
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 parser = argparse.ArgumentParser(description="Preprocessing")
 parser.add_argument('--sorted', action='store_true', default=False, help='whether to preprocess sorted dataset')
@@ -45,6 +47,8 @@ elif DATASET == 'ml-1m':
     )
 else:
     raise ValueError('Dataset error: ' + DATASET)
+
+rating_df['realUserId'] = rating_df['userId']
 
 print("Using Dataset:", DATASET)
 
@@ -89,17 +93,36 @@ done = 0
 perc_done = 0
 length = len(rating_df['userId'].unique())
 
+trainTestSplitPath = os.sep.join(['../rawdata', DATASET + '_traintestsplit.csv'])
+existingTrainTestSplit = os.path.exists(trainTestSplitPath)
+
+if existingTrainTestSplit:
+    train_test_df = pd.read_csv(trainTestSplitPath)
+else:
+    train_test_df = pd.DataFrame(columns=['realUserId', 'trainLine', 'testLine'])
+
 with open(pathTrain, 'w') as train, open(pathTest, 'w') as test:
     for userId in rating_df['userId'].unique():
         user_df = rating_df[(rating_df['userId'] == userId) & (rating_df['rating'] > RATING_THRESHOLD)]
         user_df['movieId'] = user_df['movieId'].astype(str)
         if (len(user_df['movieId']) > 1):
-            trainData, testData = train_test_split(user_df['movieId'], train_size=0.8, shuffle=False)
-            trainLine = userId.__str__() + " " + ' '.join(trainData)
-            testLine = userId.__str__() + " " + ' '.join(testData)
+            realUserId = user_df['realUserId'].iloc[0]
+            entry_df = train_test_df.loc[train_test_df['realUserId'] == realUserId]
+            if not entry_df.empty:
+                entry = entry_df.iloc[0]
+                trainLine = entry['trainLine']
+                testLine = entry['testLine']
+            else:
+                trainData, testData = train_test_split(user_df['movieId'], train_size=0.8, shuffle=True)
+                trainLine = ' '.join(trainData)
+                testLine = ' '.join(testData)
+                new_entry = pd.Series({'realUserId': realUserId, 'trainLine': trainLine, 'testLine': testLine})
+                train_test_df = pd.concat([train_test_df, new_entry.to_frame().T], ignore_index=True)
+            trainUserLine = userId.__str__() + " " + trainLine
+            testUserLine = userId.__str__() + " " + testLine
             
-            train.write(trainLine)
-            test.write(testLine)
+            train.write(trainUserLine)
+            test.write(testUserLine)
 
             train.write("\n")
             test.write("\n")
@@ -110,6 +133,7 @@ with open(pathTrain, 'w') as train, open(pathTest, 'w') as test:
         perc_now = int((done / length) * 100)
         if (perc_now > perc_done):
             print("Done:", perc_now)
+            train_test_df.to_csv(trainTestSplitPath, index=False)
             perc_done = perc_now
 
 
