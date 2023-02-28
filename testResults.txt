@@ -12,19 +12,22 @@ ML-Latest-Small-Sorted CL-V2 {'precision': array([0.14095395]), 'recall': array(
 NEW DAY NEW Results
 Testbatch 60 ohne CPP Sampling:
 
-ML-Latest-small_sorted_rating_std CL-V2 REVERSED?
+ML-Latest-small_sorted_rating_std_reversed CL-V2
+    100: {'precision': array([0.09292763]), 'recall': array([0.17339391]), 'ndcg': array([0.1676438])}
+    990: {'precision': array([0.13618421]), 'recall': array([0.25461357]), 'ndcg': array([0.24361253])}
+
+ML-Latest-small_sorted_rating_std CL-V1
+    100: {'precision': array([0.08848684]), 'recall': array([0.158086]), 'ndcg': array([0.15454657])}
+    990: {'precision': array([0.13881579]), 'recall': array([0.25459225]), 'ndcg': array([0.24898043])}
+
+ML-Latest-small_sorted_rating_std CL-V2
     100: {'precision': array([0.09375]), 'recall': array([0.16925639]), 'ndcg': array([0.16188097])}
     990: {'precision': array([0.14095395]), 'recall': array([0.25758874]), 'ndcg': array([0.249115])}
-         {'precision': array([0.14095395]), 'recall': array([0.25758874]), 'ndcg': array([0.249115])}
 
-ML-Latest-small_sorted_rating_std CL-V2 NORMAL
-    100: {'precision': array([0.09375]), 'recall': array([0.16925639]), 'ndcg': array([0.16188097])}
-    990: {'precision': array([0.14095395]), 'recall': array([0.25758874]), 'ndcg': array([0.249115])}
-
-ML-Latest-small_sorted_rating_std WITHOUT CL NORMAL
+ML-Latest-small_sorted_rating_std WITHOUT CL
     100: {'precision': array([0.103125]), 'recall': array([0.18982766]), 'ndcg': array([0.18091052])}
     990: {'precision': array([0.13963816]), 'recall': array([0.25677128]), 'ndcg': array([0.24930698])}
 
-ML-Latest-small_sorted_rating_only CL-V2 NORMAL
+ML-Latest-small_sorted_rating_only CL-V2
     100: {'precision': array([0.09580592]), 'recall': array([0.16321692]), 'ndcg': array([0.16143967])}
     990: {'precision': array([0.13824013]), 'recall': array([0.25461375]), 'ndcg': array([0.24758849])}
