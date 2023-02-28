@@ -239,33 +239,60 @@ class Loader(BasicDataset):
         self.testDataSize = 0
 
         with open(train_file) as f:
-            for l in f.readlines():
-                if len(l) > 0:
-                    l = l.strip('\n').split(' ')
-                    items = [int(i) for i in l[1:]]
-                    uid = int(l[0])
-                    trainUniqueUsers.append(uid)
-                    trainUser.extend([uid] * len(items))
-                    trainItem.extend(items)
-                    self.m_item = max(self.m_item, max(items))
-                    self.n_user = max(self.n_user, uid)
-                    self.traindataSize += len(items)
+            if config["reversedMode"]:
+                print(f"Using Reversed Mode")
+                for l in reversed(f.readlines()):
+                    if len(l) > 0:
+                        l = l.strip('\n').split(' ')
+                        items = [int(i) for i in l[1:]]
+                        uid = int(l[0])
+                        trainUniqueUsers.append(uid)
+                        trainUser.extend([uid] * len(items))
+                        trainItem.extend(items)
+                        self.m_item = max(self.m_item, max(items))
+                        self.n_user = max(self.n_user, uid)
+                        self.traindataSize += len(items)
+            else:
+                for l in f.readlines():
+                    if len(l) > 0:
+                        l = l.strip('\n').split(' ')
+                        items = [int(i) for i in l[1:]]
+                        uid = int(l[0])
+                        trainUniqueUsers.append(uid)
+                        trainUser.extend([uid] * len(items))
+                        trainItem.extend(items)
+                        self.m_item = max(self.m_item, max(items))
+                        self.n_user = max(self.n_user, uid)
+                        self.traindataSize += len(items)
         self.trainUniqueUsers = np.array(trainUniqueUsers)
         self.trainUser = np.array(trainUser)
         self.trainItem = np.array(trainItem)
 
         with open(test_file) as f:
-            for l in f.readlines():
-                if len(l) > 0:
-                    l = l.strip('\n').split(' ')
-                    items = [int(i) for i in l[1:]]
-                    uid = int(l[0])
-                    testUniqueUsers.append(uid)
-                    testUser.extend([uid] * len(items))
-                    testItem.extend(items)
-                    self.m_item = max(self.m_item, max(items))
-                    self.n_user = max(self.n_user, uid)
-                    self.testDataSize += len(items)
+            if config["reversedMode"]:
+                for l in reversed(f.readlines()):
+                    if len(l) > 0:
+                        l = l.strip('\n').split(' ')
+                        items = [int(i) for i in l[1:]]
+                        uid = int(l[0])
+                        testUniqueUsers.append(uid)
+                        testUser.extend([uid] * len(items))
+                        testItem.extend(items)
+                        self.m_item = max(self.m_item, max(items))
+                        self.n_user = max(self.n_user, uid)
+                        self.testDataSize += len(items)
+            else:
+                for l in f.readlines():
+                    if len(l) > 0:
+                        l = l.strip('\n').split(' ')
+                        items = [int(i) for i in l[1:]]
+                        uid = int(l[0])
+                        testUniqueUsers.append(uid)
+                        testUser.extend([uid] * len(items))
+                        testItem.extend(items)
+                        self.m_item = max(self.m_item, max(items))
+                        self.n_user = max(self.n_user, uid)
+                        self.testDataSize += len(items)
         self.m_item += 1
         self.n_user += 1
         self.testUniqueUsers = np.array(testUniqueUsers)

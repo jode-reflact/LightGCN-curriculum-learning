@@ -18,6 +18,7 @@ from model import PairWiseModel
 from sklearn.metrics import roc_auc_score
 import random
 import os
+"""
 try:
     from cppimport import imp_from_filepath
     from os.path import join, dirname
@@ -28,7 +29,8 @@ try:
 except:
     world.cprint("Cpp extension not loaded")
     sample_ext = False
-
+"""
+sample_ext = False
 
 class BPRLoss:
     def __init__(self,
@@ -126,7 +128,7 @@ def getFileName():
     if world.model_name == 'mf':
         file = f"mf-{world.dataset}-{world.config['latent_dim_rec']}.pth.tar"
     elif world.model_name == 'lgn':
-        file = f"lgn-{world.dataset}-{world.config['lightGCN_n_layers']}-{world.config['latent_dim_rec']}.pth.tar"
+        file = f"lgn-{world.dataset}-{world.config['lightGCN_n_layers']}-{world.config['latent_dim_rec']}-{world.config['reversedMode']}{world.config['curriculumString']}.pth.tar"
     return os.path.join(world.FILE_PATH,file)
 
 def minibatch(*tensors, **kwargs):

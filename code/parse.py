@@ -45,4 +45,5 @@ def parse_args():
     parser.add_argument('--model', type=str, default='lgn', help='rec-model, support [mf, lgn]')
     parser.add_argument('--curriculum_learning', action='store_true', default=False, help='Whether to use curriculum learning')
     parser.add_argument('--cl_version', type=int, default=1, help='Which curriculum version to use, possible: 1,2')
+    parser.add_argument('--reversed', action='store_true', default=False, help='whether to reverse sorted dataset (should be worse)')
     return parser.parse_args()

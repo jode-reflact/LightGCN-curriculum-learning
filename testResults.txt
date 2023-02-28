@@ -1,0 +1,15 @@
+Testbatch 60 ohne CPP Sampling:
+
+ML-Latest-Small {'precision': array([0.14259868]), 'recall': array([0.26300932]), 'ndcg': array([0.25178161])}
+ML-Latest-Small-Sorted {'precision': array([0.13963816]), 'recall': array([0.25673371]), 'ndcg': array([0.24931483])}
+ML-Latest-Small-Sorted CL-V1 {'precision': array([0.13881579]), 'recall': array([0.25459225]), 'ndcg': array([0.24894537])}
+ML-Latest-Small-Sorted CL-V2 {'precision': array([0.14095395]), 'recall': array([0.25758874]), 'ndcg': array([0.24912882])}
+                             {'precision': array([0.14095395]), 'recall': array([0.25758874]), 'ndcg': array([0.24912882])}
+                             {'precision': array([0.14095395]), 'recall': array([0.25758874]), 'ndcg': array([0.24912882])}
+
+
+
+NEW DAY NEW Results
+Testbatch 60 ohne CPP Sampling:
+
+ML-Latest-Small-Sorted CL-V2 REVERSED   {'precision': array([0.14095395]), 'recall': array([0.25758874]), 'ndcg': array([0.249115])}

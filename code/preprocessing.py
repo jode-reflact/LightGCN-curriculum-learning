@@ -11,13 +11,17 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 
 parser = argparse.ArgumentParser(description="Preprocessing")
 parser.add_argument('--sorted', action='store_true', default=False, help='whether to preprocess sorted dataset')
+#parser.add_argument('--reversed', action='store_true', default=False, help='whether to reverse sorted dataset (should be worse)')
+parser.add_argument('--sort_variant', type=str, default='rating_std', help='["rating_std", "rating_only"]')
 parser.add_argument('--threshold', type=float, default=3.5, help='rating threshold for positive entries')
 parser.add_argument('--dataset', type=str, default='ml-25m', help='which dataset to preprocess ["ml-25m", "ml-1m", "ml-latest-small"], default = "ml-25m"')
 
 args = parser.parse_args()
 
 SORTED = args.sorted
+#REVERSED = args.reversed
 DATASET: Literal['ml-25m', 'ml-1m', 'ml-latest-small'] = args.dataset
+SORT_VARIANT: Literal["rating_std", "rating_only"] = args.sort_variant
 RATING_THRESHOLD = args.threshold #default = 3.5
 
 url_ml25 = 'https://files.grouplens.org/datasets/movielens/ml-25m.zip'
@@ -52,7 +56,9 @@ rating_df['realUserId'] = rating_df['userId']
 
 print("Using Dataset:", DATASET)
 
-sortedDir = os.sep.join(['../data', DATASET + '_sorted'])
+SORT_AND_VARIANT_STR = '_sorted_' + SORT_VARIANT
+
+sortedDir = os.sep.join(['../data', DATASET + SORT_AND_VARIANT_STR])
 unsortedDir = os.sep.join(['../data', DATASET])
 os.makedirs(sortedDir, exist_ok=True)
 os.makedirs(unsortedDir, exist_ok=True)
@@ -66,20 +72,23 @@ print("threshold", RATING_THRESHOLD)
 print("Positive", count_positives / len(rating_df))
 print("Negative", count_negatives / len(rating_df))
 
+sortedPath = '../rawdata/'+DATASET+SORT_AND_VARIANT_STR+'.csv'
+rawSortedPath = '../rawdata/'+DATASET+'_user'+SORT_AND_VARIANT_STR+'.csv'
+
 if SORTED:
-    if os.path.exists('../rawdata/'+DATASET+'_ratings_sorted.csv'):
-        rating_df = pd.read_csv('../rawdata/'+DATASET+'_ratings_sorted.csv', index_col=0)
+    if os.path.exists(sortedPath):
+        rating_df = pd.read_csv(sortedPath, index_col=0)
         rating_df.sort_values(by='userId', ascending=True, inplace=True)
     else:
-        sort_df = pd.read_csv('../rawdata/'+DATASET+'_user_sorted_rating_std.csv')
+        sort_df = pd.read_csv(rawSortedPath)
         rating_df['sort_index'] = rating_df['userId'].apply(lambda userId: sort_df.userId.eq(userId).idxmax())
         rating_df.drop(columns=['userId'], inplace=True)
         rating_df.rename(columns={"sort_index": "userId"}, inplace=True)
         rating_df.sort_values(by='userId', ascending=True, inplace=True)
-        rating_df.to_csv('../rawdata/'+DATASET+'_ratings_sorted.csv')
+        rating_df.to_csv(sortedPath)
 
-    pathTrain = os.sep.join(['../data', DATASET + '_sorted', 'train.txt'])
-    pathTest = os.sep.join(['../data', DATASET + '_sorted', 'test.txt'])
+    pathTrain = os.sep.join(['../data', DATASET + SORT_AND_VARIANT_STR, 'train.txt'])
+    pathTest = os.sep.join(['../data', DATASET + SORT_AND_VARIANT_STR, 'test.txt'])
 else:
     lbl_user = preprocessing.LabelEncoder()
     rating_df.userId = lbl_user.fit_transform(rating_df.userId.values)
