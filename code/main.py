@@ -31,7 +31,7 @@ Neg_k = 1
 # init tensorboard
 if world.tensorboard:
     w : SummaryWriter = SummaryWriter(
-                                    join(world.BOARD_PATH, time.strftime("%m-%d-%Hh%Mm%Ss-") + "-" + world.comment)
+                                    join(world.BOARD_PATH, time.strftime("%m-%d-%Hh%Mm%Ss-") + f"{world.dataset}{world.config['curriculumString']}-{world.comment}")
                                     )
 else:
     w = None

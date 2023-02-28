@@ -46,7 +46,11 @@ Change `ROOT_PATH` in `code/world.py`
 
 - develop command
 
-`cd code && python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2023 --dataset="ml-latest-small_sorted_rating_std" --topks="[20]" --recdim=64 --tensorboard=1 --curriculum_learning --testbatch=60 --cl_version=2 --reversed`
+`cd code && python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2023 --dataset="ml-latest-small_sorted_rating_std_reversed" --topks="[20]" --recdim=64 --tensorboard=1 --curriculum_learning --testbatch=60 --cl_version=2`
+
+- tensorboard command
+
+`tensorboard --logdir runs`
 
 - log output
 

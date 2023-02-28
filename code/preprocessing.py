@@ -11,7 +11,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 
 parser = argparse.ArgumentParser(description="Preprocessing")
 parser.add_argument('--sorted', action='store_true', default=False, help='whether to preprocess sorted dataset')
-#parser.add_argument('--reversed', action='store_true', default=False, help='whether to reverse sorted dataset (should be worse)')
+parser.add_argument('--reversed', action='store_true', default=False, help='whether to reverse sorted dataset (should be worse)')
 parser.add_argument('--sort_variant', type=str, default='rating_std', help='["rating_std", "rating_only"]')
 parser.add_argument('--threshold', type=float, default=3.5, help='rating threshold for positive entries')
 parser.add_argument('--dataset', type=str, default='ml-25m', help='which dataset to preprocess ["ml-25m", "ml-1m", "ml-latest-small"], default = "ml-25m"')
@@ -19,7 +19,7 @@ parser.add_argument('--dataset', type=str, default='ml-25m', help='which dataset
 args = parser.parse_args()
 
 SORTED = args.sorted
-#REVERSED = args.reversed
+REVERSED = args.reversed
 DATASET: Literal['ml-25m', 'ml-1m', 'ml-latest-small'] = args.dataset
 SORT_VARIANT: Literal["rating_std", "rating_only"] = args.sort_variant
 RATING_THRESHOLD = args.threshold #default = 3.5
@@ -56,7 +56,7 @@ rating_df['realUserId'] = rating_df['userId']
 
 print("Using Dataset:", DATASET)
 
-SORT_AND_VARIANT_STR = '_sorted_' + SORT_VARIANT
+SORT_AND_VARIANT_STR = '_sorted_' + SORT_VARIANT + ("_reversed" if REVERSED else "")
 
 sortedDir = os.sep.join(['../data', DATASET + SORT_AND_VARIANT_STR])
 unsortedDir = os.sep.join(['../data', DATASET])
@@ -73,7 +73,7 @@ print("Positive", count_positives / len(rating_df))
 print("Negative", count_negatives / len(rating_df))
 
 sortedPath = '../rawdata/'+DATASET+SORT_AND_VARIANT_STR+'.csv'
-rawSortedPath = '../rawdata/'+DATASET+'_user'+SORT_AND_VARIANT_STR+'.csv'
+rawSortedPath = '../rawdata/'+DATASET+'_user'+'_sorted_' + SORT_VARIANT+'.csv'
 
 if SORTED:
     if os.path.exists(sortedPath):
@@ -81,6 +81,8 @@ if SORTED:
         rating_df.sort_values(by='userId', ascending=True, inplace=True)
     else:
         sort_df = pd.read_csv(rawSortedPath)
+        if REVERSED:
+            sort_df = sort_df.loc[::-1].reset_index(drop=True)
         rating_df['sort_index'] = rating_df['userId'].apply(lambda userId: sort_df.userId.eq(userId).idxmax())
         rating_df.drop(columns=['userId'], inplace=True)
         rating_df.rename(columns={"sort_index": "userId"}, inplace=True)
