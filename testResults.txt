@@ -16,6 +16,10 @@ ML-Latest-small_sorted_rating_std_reversed CL-V2
     100: {'precision': array([0.09292763]), 'recall': array([0.17339391]), 'ndcg': array([0.1676438])}
     990: {'precision': array([0.13618421]), 'recall': array([0.25461357]), 'ndcg': array([0.24361253])}
 
+ML-Latest-small_sorted_rating_std_reversed CL-V3
+    100: {'precision': array([0.09893092]), 'recall': array([0.18543709]), 'ndcg': array([0.17376836])}
+    990: {'precision': array([0.13601974]), 'recall': array([0.25415811]), 'ndcg': array([0.24690946])}
+
 ML-Latest-small_sorted_rating_std CL-V1
     100: {'precision': array([0.08848684]), 'recall': array([0.158086]), 'ndcg': array([0.15454657])}
     990: {'precision': array([0.13881579]), 'recall': array([0.25459225]), 'ndcg': array([0.24898043])}
@@ -24,10 +28,47 @@ ML-Latest-small_sorted_rating_std CL-V2
     100: {'precision': array([0.09375]), 'recall': array([0.16925639]), 'ndcg': array([0.16188097])}
     990: {'precision': array([0.14095395]), 'recall': array([0.25758874]), 'ndcg': array([0.249115])}
 
+ML-Latest-small_sorted_rating_std CL-V3
+    100: {'precision': array([0.0953125]), 'recall': array([0.17546063]), 'ndcg': array([0.16922952])}
+    980: {'precision': array([0.14120066]), 'recall': array([0.26311365]), 'ndcg': array([0.25549697])}
+    990: {'precision': array([0.14111842]), 'recall': array([0.26177939]), 'ndcg': array([0.25471607])}
+
+ML-Latest-small_sorted_rating_std CL-V3 TOPKS 10 --> WORSE
+    100: {'precision': array([0.11875]), 'recall': array([0.11294578]), 'ndcg': array([0.15746904])}
+    990: {'precision': array([0.18174342]), 'recall': array([0.17258592]), 'ndcg': array([0.24038761])}
+
+ML-Latest-small_sorted_rating_std CL-V3 TOPKS 40
+    100: {'precision': array([0.07450658]), 'recall': array([0.26603584]), 'ndcg': array([0.19505445])}
+    990: {'precision': array([0.10444079]), 'recall': array([0.3624301]), 'ndcg': array([0.28134133])}
+
 ML-Latest-small_sorted_rating_std WITHOUT CL
     100: {'precision': array([0.103125]), 'recall': array([0.18982766]), 'ndcg': array([0.18091052])}
     990: {'precision': array([0.13963816]), 'recall': array([0.25677128]), 'ndcg': array([0.24930698])}
 
+ML-Latest-small_sorted_rating_only CL-V1
+    100: {'precision': array([0.08544408]), 'recall': array([0.14648054]), 'ndcg': array([0.14765817])}
+    990: {'precision': array([0.13741776]), 'recall': array([0.25555604]), 'ndcg': array([0.25098254])}
+
 ML-Latest-small_sorted_rating_only CL-V2
     100: {'precision': array([0.09580592]), 'recall': array([0.16321692]), 'ndcg': array([0.16143967])}
     990: {'precision': array([0.13824013]), 'recall': array([0.25461375]), 'ndcg': array([0.24758849])}
+
+ML-Latest-small_sorted_rating_only WITHOUT CL
+    100: {'precision': array([0.10493421]), 'recall': array([0.18795202]), 'ndcg': array([0.18380505])}
+    990: {'precision': array([0.1390625]), 'recall': array([0.25807799]), 'ndcg': array([0.25149424])}
+
+ML-Latest-small normal
+    100: {'precision': array([0.10279605]), 'recall': array([0.1918514]), 'ndcg': array([0.18158204])}
+    990: {'precision': array([0.14251645]), 'recall': array([0.26289967]), 'ndcg': array([0.25181003])}
+
+ML-latest-small normal TOPKS 40
+    100: {'precision': array([0.07870066]), 'recall': array([0.28053435]), 'ndcg': array([0.20584723])}
+    990: {'precision': array([0.10481086]), 'recall': array([0.36666124]), 'ndcg': array([0.27908574])}
+
+ML-Latest-small CL-V2
+    100: {'precision': array([0.09185855]), 'recall': array([0.16070122]), 'ndcg': array([0.16027542])}
+    990: {'precision': array([0.13511513]), 'recall': array([0.25118459]), 'ndcg': array([0.24203969])}
+
+ML-Latest-small_sorted_rating_count CL-V2
+    100: {'precision': array([0.08667763]), 'recall': array([0.15876048]), 'ndcg': array([0.15905426])}
+    990: {'precision': array([0.13174342]), 'recall': array([0.23826746]), 'ndcg': array([0.23507928])}

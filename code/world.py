@@ -31,7 +31,7 @@ if not os.path.exists(FILE_PATH):
 
 
 config = {}
-all_dataset = ['lastfm', 'gowalla', 'yelp2018', 'amazon-book', 'ml-25m', 'ml-25m_small', 'ml-25m_sorted', 'ml-25m_sorted_small', 'ml-1m', 'ml-1m_sorted', 'ml-latest-small', 'ml-latest-small_sorted_rating_std', 'ml-latest-small_sorted_rating_only', 'ml-latest-small_sorted_rating_std_reversed', 'ml-latest-small_sorted_rating_only_reversed']
+all_dataset = ['lastfm', 'gowalla', 'yelp2018', 'amazon-book', 'ml-25m', 'ml-25m_small', 'ml-25m_sorted', 'ml-25m_sorted_small', 'ml-1m', 'ml-1m_sorted', 'ml-latest-small', 'ml-latest-small_sorted_rating_std', 'ml-latest-small_sorted_rating_only', 'ml-latest-small_sorted_rating_std_reversed', 'ml-latest-small_sorted_rating_only_reversed','ml-latest-small_sorted_rating_count']
 all_models  = ['mf', 'lgn']
 # config['batch_size'] = 4096
 config['bpr_batch_size'] = args.bpr_batch
@@ -49,11 +49,11 @@ config['A_split'] = False
 config['bigdata'] = False
 
 curriculum_learning = args.curriculum_learning
-cl_version: Literal[1,2] = args.cl_version
+cl_version: Literal[1,2,3] = args.cl_version
 
 config["curriculumString"] = '-curriculum-' + str(cl_version) if curriculum_learning else ''
 
-available_versions = [1,2]
+available_versions = [1,2,3]
 
 if cl_version not in available_versions:
     raise NotImplementedError(f"Unsupported Curriculum Learning Version {cl_version}!, try {available_versions}")

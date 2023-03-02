@@ -12,7 +12,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 parser = argparse.ArgumentParser(description="Preprocessing")
 parser.add_argument('--sorted', action='store_true', default=False, help='whether to preprocess sorted dataset')
 parser.add_argument('--reversed', action='store_true', default=False, help='whether to reverse sorted dataset (should be worse)')
-parser.add_argument('--sort_variant', type=str, default='rating_std', help='["rating_std", "rating_only"]')
+parser.add_argument('--sort_variant', type=str, default='rating_std', help='["rating_std", "rating_only", "rating_count"]')
 parser.add_argument('--threshold', type=float, default=3.5, help='rating threshold for positive entries')
 parser.add_argument('--dataset', type=str, default='ml-25m', help='which dataset to preprocess ["ml-25m", "ml-1m", "ml-latest-small"], default = "ml-25m"')
 
@@ -21,7 +21,7 @@ args = parser.parse_args()
 SORTED = args.sorted
 REVERSED = args.reversed
 DATASET: Literal['ml-25m', 'ml-1m', 'ml-latest-small'] = args.dataset
-SORT_VARIANT: Literal["rating_std", "rating_only"] = args.sort_variant
+SORT_VARIANT: Literal["rating_std", "rating_only", "rating_count"] = args.sort_variant
 RATING_THRESHOLD = args.threshold #default = 3.5
 
 url_ml25 = 'https://files.grouplens.org/datasets/movielens/ml-25m.zip'

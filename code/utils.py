@@ -42,6 +42,9 @@ class BPRLoss:
         self.opt = optim.Adam(recmodel.parameters(), lr=self.lr)
 
     def stageOne(self, users, pos, neg):
+        #print("Users", users)
+        #print("Pos", pos)
+        #print("Neg", neg)
         loss, reg_loss = self.model.bpr_loss(users, pos, neg)
         reg_loss = reg_loss*self.weight_decay
         loss = loss + reg_loss
@@ -69,6 +72,9 @@ def UniformSample_original(dataset, neg_ratio = 1, epoch=0):
                 high = max(int(dataset.n_users * epochPerc),1)
         elif world.cl_version == 2:
             high = world.config['test_u_batch_size'] * getMultiplyPerc(epochPerc)
+        elif world.cl_version == 3:
+            high = world.config['test_u_batch_size'] * getMultiplyPerc(epochPerc) * 2
+    high = min(high, dataset.n_users)
     print("high", high)
     if sample_ext:
         S = sampling.sample_negative(high, dataset.m_items,
