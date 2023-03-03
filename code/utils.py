@@ -71,9 +71,11 @@ def UniformSample_original(dataset, neg_ratio = 1, epoch=0):
             if epochPerc < 0.5:
                 high = max(int(dataset.n_users * epochPerc),1)
         elif world.cl_version == 2:
-            high = world.config['test_u_batch_size'] * getMultiplyPerc(epochPerc)
+            #high = world.config['test_u_batch_size'] * getMultiplyPerc(epochPerc)
+            high = (dataset.n_users // 10) * getMultiplyPerc(epochPerc)
         elif world.cl_version == 3:
-            high = world.config['test_u_batch_size'] * getMultiplyPerc(epochPerc) * 2
+            #high = world.config['test_u_batch_size'] * getMultiplyPerc(epochPerc) * 2
+            high = (dataset.n_users // 10) * getMultiplyPerc(epochPerc) * 2
     high = min(high, dataset.n_users)
     print("high", high)
     if sample_ext:
