@@ -38,6 +38,7 @@ else:
     world.cprint("not enable tensorflowboard")
 
 try:
+    trainStart = time.time()
     for epoch in range(world.TRAIN_epochs):
         start = time.time()
         if epoch %10 == 0:
@@ -47,5 +48,7 @@ try:
         print(f'EPOCH[{epoch+1}/{world.TRAIN_epochs}] {output_information}')
         torch.save(Recmodel.state_dict(), weight_file)
 finally:
+    end = time.time()
+    print("Duration", end - trainStart)
     if world.tensorboard:
         w.close()
