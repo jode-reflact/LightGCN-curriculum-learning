@@ -1,13 +1,22 @@
-#### Update
+## LightGCN with applied curriculum learning strategy
 
-2020-09:
+Official repository for our LightGCN-curriculum-learning paper.
+Used Datasets:
+- MovieLens-latest-small as included in this repository
+- [MovieLens-1M](https://grouplens.org/datasets/movielens/1m)
 
-- Change the print format of each epoch
-- Add Cpp Extension in `code/sources/` for negative sampling. To use the extension, please install `pybind11` and `cppimport` under your environment
+In order to run the code:
+- change base directory: `ROOT_PATH` in `code/world.py`
+- install requirements: `pip install -r requirements.txt` (we recommend creating an virtual environment)
+- install additional torch packages: `pip install torch_sparse torch_scatter`
+
+Steps to preprocess an dataset:
+1. Run `preprocessing.py` e.g. `python preprocessing.py --dataset=ml-1m --sorted --sort_variant=rating_std`
+2. Add the dataset in LightGCN (only for new datasets or sorting variants) by editing `code/world.py` and `code/register.py`
 
 ---
 
-## LightGCN-pytorch
+## LightGCN-pytorch readme with added run commands
 
 This is the Pytorch implementation for our SIGIR 2020 paper:
 
