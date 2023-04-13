@@ -17,7 +17,7 @@ import multiprocessing
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 args = parse_args()
 
-ROOT_PATH = "/Users/jonasdeterding/machineLearning/LightGCN-curriculum-learning"
+ROOT_PATH = "/Users/USERNAME/machineLearning/LightGCN-curriculum-learning" # absolute path to repository root
 CODE_PATH = join(ROOT_PATH, 'code')
 DATA_PATH = join(ROOT_PATH, 'data')
 BOARD_PATH = join(CODE_PATH, 'runs')

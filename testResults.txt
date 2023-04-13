@@ -32,6 +32,7 @@ ML-Latest-small_sorted_rating_std CL-V3
     100: {'precision': array([0.0953125]), 'recall': array([0.17546063]), 'ndcg': array([0.16922952])}
     980: {'precision': array([0.14120066]), 'recall': array([0.26311365]), 'ndcg': array([0.25549697])}
     990: {'precision': array([0.14111842]), 'recall': array([0.26177939]), 'ndcg': array([0.25471607])}
+        Duration 622.0046570301056
 
 ML-Latest-small_sorted_rating_std CL-V3 TOPKS 10 --> WORSE
     100: {'precision': array([0.11875]), 'recall': array([0.11294578]), 'ndcg': array([0.15746904])}
@@ -60,6 +61,7 @@ ML-Latest-small_sorted_rating_only WITHOUT CL
 ML-Latest-small normal
     100: {'precision': array([0.10279605]), 'recall': array([0.1918514]), 'ndcg': array([0.18158204])}
     990: {'precision': array([0.14251645]), 'recall': array([0.26289967]), 'ndcg': array([0.25181003])}
+        Duration 620.4002840518951
 
 ML-latest-small normal TOPKS 40
     100: {'precision': array([0.07870066]), 'recall': array([0.28053435]), 'ndcg': array([0.20584723])}
@@ -72,3 +74,26 @@ ML-Latest-small CL-V2
 ML-Latest-small_sorted_rating_count CL-V2
     100: {'precision': array([0.08667763]), 'recall': array([0.15876048]), 'ndcg': array([0.15905426])}
     990: {'precision': array([0.13174342]), 'recall': array([0.23826746]), 'ndcg': array([0.23507928])}
+
+Ml-1m_sorted_std CL-V3
+    990: {'precision': array([0.19214842]), 'recall': array([0.26511171]), 'ndcg': array([0.29717159])}
+         {'precision': array([0.19214842]), 'recall': array([0.26511171]), 'ndcg': array([0.29718051])}
+         {'precision': array([0.19214842]), 'recall': array([0.26511171]), 'ndcg': array([0.29718027])}
+
+         Duration 53735.41804218292 sec
+
+Ml-1m normal
+    990: {'precision': array([0.01972006]), 'recall': array([0.04381401]), 'ndcg': array([0.03436277])}
+    990: {'precision': array([0.19300977]), 'recall': array([0.26706085]), 'ndcg': array([0.29938017])}
+        {'precision': array([0.19300977]), 'recall': array([0.26706085]), 'ndcg': array([0.29938015])}
+        Duration 51095.20429158211
+
+Ml-1m sorted random
+    990: {'precision': array([0.19348186]), 'recall': array([0.26819505]), 'ndcg': array([0.30137297])}
+
+
+ML-Latest-small_sorted_rating_count CL V3
+    990: {'precision': array([0.13634868]), 'recall': array([0.25360442]), 'ndcg': array([0.24671203])}
+
+ML-Latest-small_sorted_rating_only CL V3
+    990: {'precision': array([0.13947368]), 'recall': array([0.25887466]), 'ndcg': array([0.25041348])}
